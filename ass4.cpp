@@ -16,8 +16,8 @@ int nodeHeuristics(int src, int dest);
 
 int main(int argc, char **argv)
 { 
-    ifstream in("Adjacency matrix.txt");
-    // ifstream in("precomp.txt");
+    // ifstream in("Adjacency matrix.txt");
+    ifstream in("precomp.txt");
     int arr[SIZE][SIZE];
     string line, word;
     int value = 0, row = 0;
@@ -30,9 +30,9 @@ int main(int argc, char **argv)
         //gets each word
         int col = 0;
         while(ss >> word){
-            //  cout << word;
-            if(isdigit(word[0])){
-                //  cout << "is stored" << endl;
+            cout << word.front();
+            if(isdigit(word.front())){
+                cout << "is stored" << endl;
                 value = stoi(word);
                 arr[row][col] = value;
                 col++;
@@ -65,12 +65,12 @@ int main(int argc, char **argv)
     int src = 0; 
     int dest = 28;
     
-    for(int i = 0; i < 31; i++){
-        for(int j = 0; j < 31; j++){
-            cout << dijkstra(arr,i,j) << ", ";
-        }
-        cout << endl;
-    }
+    // for(int i = 0; i < 31; i++){
+    //     for(int j = 0; j < 31; j++){
+    //         cout << dijkstra(arr,i,j) << ", ";
+    //     }
+    //     cout << endl;
+    // }
     /*
     dist[src] = 0;
     f[src] = 0 + dijkstra(arr, src,dest);

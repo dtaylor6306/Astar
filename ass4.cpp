@@ -15,11 +15,13 @@ int nodeHeuristics(int src, int dest);
 
 
 int main(int argc, char **argv)
-{
+{ 
     ifstream in("Adjacency matrix.txt");
+    // ifstream in("precomp.txt");
     int arr[SIZE][SIZE];
     string line, word;
     int value = 0, row = 0;
+    int h[SIZE][SIZE];
     
     while(getline(in,line)){
         //cout << "This line:" << line << endl;
@@ -28,7 +30,9 @@ int main(int argc, char **argv)
         //gets each word
         int col = 0;
         while(ss >> word){
+            //  cout << word;
             if(isdigit(word[0])){
+                //  cout << "is stored" << endl;
                 value = stoi(word);
                 arr[row][col] = value;
                 col++;
@@ -36,16 +40,17 @@ int main(int argc, char **argv)
         }
         row++;
     }
-/*
-    for(int i = 0; i < SIZE; i++){
-        for(int j = 0; j < SIZE; j++){
-            cout <<  arr[i][j] << " ";
-        }
-        cout << endl;
-    }
+    in.close(); 
+    fstream fin;
+    //fin.open("precomp.txt");
+    
 
-    cout << dijkstra(arr,0,28) << endl;
-    cout << nodeHeuristics(11,30) << endl; */
+    // for(int i = 0; i < 31; i++){
+    //     for(int j =0; j < 31; j++){
+    //         cout << h[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     int dist[SIZE];
     bool visited[SIZE];
@@ -60,6 +65,13 @@ int main(int argc, char **argv)
     int src = 0; 
     int dest = 28;
     
+    for(int i = 0; i < 31; i++){
+        for(int j = 0; j < 31; j++){
+            cout << dijkstra(arr,i,j) << ", ";
+        }
+        cout << endl;
+    }
+    /*
     dist[src] = 0;
     f[src] = 0 + dijkstra(arr, src,dest);
     // should go 0 > 30 > 11 > 12 > 13 >28 done
@@ -84,7 +96,7 @@ int main(int argc, char **argv)
         } 
             
 
-    }
+    } */
     // if not 0 check it
     // f = g + h
     // g = distance thus far

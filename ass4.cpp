@@ -16,8 +16,8 @@ int nodeHeuristics(int src, int dest);
 
 int main(int argc, char **argv)
 { 
-    // ifstream in("Adjacency matrix.txt");
-    ifstream in("precomp.txt");
+    ifstream in("Adjacency matrix.txt");
+    // ifstream in("precomp.txt");
     int arr[SIZE][SIZE];
     string line, word;
     int value = 0, row = 0;
@@ -30,9 +30,8 @@ int main(int argc, char **argv)
         //gets each word
         int col = 0;
         while(ss >> word){
-            cout << word.front();
-            if(isdigit(word.front())){
-                cout << "is stored" << endl;
+         
+            if(isdigit(word[0])){
                 value = stoi(word);
                 arr[row][col] = value;
                 col++;
@@ -41,8 +40,26 @@ int main(int argc, char **argv)
         row++;
     }
     in.close(); 
-    fstream fin;
-    //fin.open("precomp.txt");
+    in.open("precomp.txt");
+    row =0;
+    value = 0;
+    
+    while(getline(in,line)){
+        //cout << "This line:" << line << endl;
+        stringstream ss(line);
+
+        //gets each word
+        int col = 0;
+        while(ss >> word){
+         
+            if(isdigit(word[0])){
+                value = stoi(word);
+                h[row][col] = value;
+                col++;
+            } 
+        }
+        row++;
+    }
     
 
     // for(int i = 0; i < 31; i++){
@@ -65,15 +82,10 @@ int main(int argc, char **argv)
     int src = 0; 
     int dest = 28;
     
-    // for(int i = 0; i < 31; i++){
-    //     for(int j = 0; j < 31; j++){
-    //         cout << dijkstra(arr,i,j) << ", ";
-    //     }
-    //     cout << endl;
-    // }
-    /*
+    
     dist[src] = 0;
-    f[src] = 0 + dijkstra(arr, src,dest);
+    f[src] = 0 + h[src][dest];
+    cout <<  h[src][dest] << "THIS IS THE START\n\n\n";
     // should go 0 > 30 > 11 > 12 > 13 >28 done
 
     for(int i = 0; i < SIZE - 1; i++){
@@ -85,7 +97,7 @@ int main(int argc, char **argv)
             if(arr[current][check] != 0 && !visited[check] 
             && arr[current][check] + dist[current] < dist[check]){
                 dist[check] = arr[current][check] + dist[current];
-                f[check] = dist[check] + dijkstra(arr,check,dest);
+                f[check] = dist[check] + h[current][check];
                 cout << check << " " << f[check] << endl;
             }
         }
@@ -96,7 +108,7 @@ int main(int argc, char **argv)
         } 
             
 
-    } */
+    } 
     // if not 0 check it
     // f = g + h
     // g = distance thus far

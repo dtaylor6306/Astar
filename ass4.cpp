@@ -4,6 +4,7 @@
 #include <sstream>
 #include <cctype>
 #include <cmath>
+#include <climits>
 
 using namespace std;
 const int SIZE = 31;
@@ -16,8 +17,8 @@ int nodeHeuristics(int src, int dest);
 
 int main(int argc, char **argv)
 { 
+    //Reading input
     ifstream in("Adjacency matrix.txt");
-
     int arr[SIZE][SIZE];
     string line, word;
     int value = 0, row = 0;
@@ -43,9 +44,8 @@ int main(int argc, char **argv)
     in.open("precomp.txt");
     row =0;
     value = 0;
-    
+    //Reads heuristic data
     while(getline(in,line)){
-        //cout << "This line:" << line << endl;
         stringstream ss(line);
 
         //gets each word
@@ -62,67 +62,56 @@ int main(int argc, char **argv)
     }
     in.close();
 
-    // for(int i = 0; i < 31; i++){
-    //     for(int j =0; j < 31; j++){
-    //         cout << arr[i][j] << " ";
-    //     }
-    //     cout << endl;
-    // }
-
     int dist[SIZE];
     bool visited[SIZE];
     int f[SIZE];
-
+    //setup 
+    // all dist = max
+    // all f = max
+    // because both are unknown to start
+    // all visited = false
     for(int i = 0; i < SIZE; i++){
         dist[i] = INT_MAX; 
         f[i] = INT_MAX;
         visited[i] = false;
     }
 
-    int src = 0; 
-    int dest = 28;
+    int src = stoi(argv[1]); 
+    int dest = stoi(argv[2]);
     
-    
+    //setup for intial state
     dist[src] = 0;
     f[src] = 0 + h[src][dest];
-    cout <<  h[src][dest] << "THIS IS THE START\n\n\n";
-    // should go 0 > 30 > 11 > 12 > 13 >28 done
 
     for(int i = 0; i < SIZE - 1; i++){
 
         int current = minDistance(f,visited);
         visited[current] = true;
-        cout << "\t\t\t" << current << endl;
-        for(int check = 0; check < SIZE; check++){
-            // cout << current << "\t\t" << check << "\t\t" << arr[current][check] << endl;
-            // cout << visited[check] << "\t\t" << arr[current][check] + dist[current] << "\t\t" << dist[check] << "\n\n\n";
-            if((arr[current][check] != 0) && !visited[check] && (arr[current][check] + dist[current] < dist[check])){
-                
-                dist[check] = arr[current][check] + dist[current];
-                // cout << " arr " << arr[current][check];
-                // cout << " dist: " << dist[current];
-                f[check] = dist[check] + h[check][dest];
-                // cout << " f " << f[check] << " h " << h[current][dest] << endl;
-                cout << check << " " << f[check] << endl;
-            }
-        }
+        
+        cout << "\t\t\tCurrent: " << current << endl;
+        //break before going further.
         if(current == dest){
 
-            cout << "Arrived at " << current << " " << dist[current];
+            cout << "\n\nArrived at: " << current << " with a total distance of: " << dist[current];
             
             break;
         } 
+        //updates all distances and f values when there is a connection to those nodes.
+        for(int check = 0; check < SIZE; check++){
+            if((arr[current][check] != 0) && !visited[check] && (arr[current][check] + dist[current] < dist[check])){
+                
+                dist[check] = arr[current][check] + dist[current];
+                f[check] = dist[check] + h[check][dest];
+                cout << "Connected node #: " << check << " Distance to get there: "
+                     << dist[check] << " Heurisitc: " << h[check][dest] << endl;
+            }
+        }
             
 
     } 
-    // if not 0 check it
-    // f = g + h
-    // g = distance thus far
-    // h = heuristic
-    // need priority queue
-    // parent array
 }
 
+//Used as a psuedo priority queue
 int minDistance(int dist[], bool sptSet[])
 {
 

@@ -17,14 +17,14 @@ int nodeHeuristics(int src, int dest);
 int main(int argc, char **argv)
 { 
     ifstream in("Adjacency matrix.txt");
-    // ifstream in("precomp.txt");
+
     int arr[SIZE][SIZE];
     string line, word;
     int value = 0, row = 0;
     int h[SIZE][SIZE];
     
     while(getline(in,line)){
-        //cout << "This line:" << line << endl;
+   
         stringstream ss(line);
 
         //gets each word
@@ -60,11 +60,11 @@ int main(int argc, char **argv)
         }
         row++;
     }
-    
+    in.close();
 
     // for(int i = 0; i < 31; i++){
     //     for(int j =0; j < 31; j++){
-    //         cout << h[i][j] << " ";
+    //         cout << arr[i][j] << " ";
     //     }
     //     cout << endl;
     // }
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     int f[SIZE];
 
     for(int i = 0; i < SIZE; i++){
-        dist[i] == INT_MAX; 
+        dist[i] = INT_MAX; 
         f[i] = INT_MAX;
         visited[i] = false;
     }
@@ -94,14 +94,20 @@ int main(int argc, char **argv)
         visited[current] = true;
         cout << "\t\t\t" << current << endl;
         for(int check = 0; check < SIZE; check++){
-            if(arr[current][check] != 0 && !visited[check] 
-            && arr[current][check] + dist[current] < dist[check]){
+            // cout << current << "\t\t" << check << "\t\t" << arr[current][check] << endl;
+            // cout << visited[check] << "\t\t" << arr[current][check] + dist[current] << "\t\t" << dist[check] << "\n\n\n";
+            if((arr[current][check] != 0) && !visited[check] && (arr[current][check] + dist[current] < dist[check])){
+                
                 dist[check] = arr[current][check] + dist[current];
-                f[check] = dist[check] + h[current][check];
+                // cout << " arr " << arr[current][check];
+                // cout << " dist: " << dist[current];
+                f[check] = dist[check] + h[check][dest];
+                // cout << " f " << f[check] << " h " << h[current][dest] << endl;
                 cout << check << " " << f[check] << endl;
             }
         }
         if(current == dest){
+
             cout << "Arrived at " << current << " " << dist[current];
             
             break;
@@ -130,45 +136,3 @@ int minDistance(int dist[], bool sptSet[])
 	return min_index;
 }
 
-
-int dijkstra(int graph[SIZE][SIZE], int src, int dst)
-{
-	int dist[SIZE]; // The output array. dist[i] will hold the shortest
-	// distance from src to i
-
-	bool sptSet[SIZE]; // sptSet[i] will be true if vertex i is included in shortest
-	// path tree or shortest distance from src to i is finalized
-
-	// Initialize all distances as INFINITE and stpSet[] as false
-	for (int i = 0; i < SIZE; i++)
-		dist[i] = INT_MAX, sptSet[i] = false;
-
-	// Distance of source vertex from itself is always 0
-	dist[src] = 0;
-
-	// Find shortest path for all vertices
-	for (int count = 0; count < SIZE - 1; count++) {
-		// Pick the minimum distance vertex from the set of vertices not
-		// yet processed. u is always equal to src in the first iteration.
-		int u = minDistance(dist, sptSet);
-
-		// Mark the picked vertex as processed
-		sptSet[u] = true;
-
-		// Update dist value of the adjacent vertices of the picked vertex.
-		for (int v = 0; v < SIZE; v++)
-
-			// Update dist[v] only if is not in sptSet, there is an edge from
-			// u to v, and total weight of path from src to v through u is
-			// smaller than current value of dist[v]
-			if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX
-				&& dist[u] + graph[u][v] < dist[v])
-				dist[v] = dist[u] + graph[u][v];
-	}
-
-    return dist[dst];
-}
-
-int nodeHeuristics(int src, int dest){
-    return abs(dest - src);
-}
